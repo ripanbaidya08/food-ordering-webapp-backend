@@ -30,3 +30,7 @@ The **FoodSphere Food Ordering System** is a role-based online food ordering app
 
 ### Payment Integration
 - **Secure Online Payment Gateway**: The backend integrates a secure payment gateway(stripe payment gateway), facilitating safe and reliable transactions for users.
+
+### Class diagram
+![@localhost](https://github.com/user-attachments/assets/09b5942b-b234-4568-84c3-535a22be83f2)
+
