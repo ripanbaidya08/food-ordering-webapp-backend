@@ -21,7 +21,8 @@ import java.util.List;
 
 public class JwtValidator extends OncePerRequestFilter {
 
-    @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String jwt = request.getHeader(JwtConstant.JWT_HEADER);
@@ -31,13 +32,17 @@ public class JwtValidator extends OncePerRequestFilter {
 
             try {
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+                /**
+                 * The Claims object holds the payload of the JWT, which may include user information, expiration time, roles, etc.,
+                 * that can be used for further authorization and validation.
+                 */
                 Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
 
                 String email = String.valueOf(claims.get("email"));
                 String authorities = String.valueOf(claims.get("roles")); // Ensure this key matches the JWT payload
 
-                List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, auth);
+                List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, grantedAuthorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {

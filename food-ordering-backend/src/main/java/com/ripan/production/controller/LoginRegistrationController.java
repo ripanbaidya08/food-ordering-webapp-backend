@@ -1,6 +1,7 @@
 package com.ripan.production.controller;
 
 import com.ripan.production.config.JwtProvider;
+import com.ripan.production.exception.UserException;
 import com.ripan.production.model.Cart;
 import com.ripan.production.model.USER_ROLE;
 import com.ripan.production.model.User;
@@ -29,7 +30,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class LoginRegistrationController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,8 +42,9 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> registerUser(@RequestBody User user) throws Exception {
 
+        // check whether user exist or not.
         User isExist = userRepository.findByEmail(user.getEmail());
-        if(isExist != null) throw new Exception("Email already in use. Please use a different email.");
+        if(isExist != null) throw new UserException("Email already in use. Please use a different email.");
 
         User createdUserRequest = new User();
 
@@ -51,6 +53,7 @@ public class AuthController {
         createdUserRequest.setRole(user.getRole());
         createdUserRequest.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        // save the user details to the database.
         User persistedUser = userRepository.save(createdUserRequest);
 
         Cart createdCartRequest = new Cart();
@@ -60,6 +63,7 @@ public class AuthController {
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // after the registration, it need to generate the token.
         String token = jwtProvider.generateToken(authentication);
         AuthResponse authResponse = new AuthResponse(token, "Your account has been created successfully", persistedUser.getRole());
 
@@ -70,6 +74,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest request) {
 
+        // first, authenticate the user
         Authentication authentication = authenticate(request.getEmail(), request.getPassword());
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -83,6 +88,7 @@ public class AuthController {
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
+    // authenticate the user by there username and password.
     private Authentication authenticate(String username, String password) {
         UserDetails userDetails = customerUserDetailsService.loadUserByUsername(username);
         if(userDetails == null) throw new BadCredentialsException("User not found!");

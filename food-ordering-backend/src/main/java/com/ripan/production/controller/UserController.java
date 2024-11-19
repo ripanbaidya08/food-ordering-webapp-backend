@@ -14,6 +14,13 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * we need to provide the token, if we want to perform any operation wrt user means the customer, and this step will follow
+     * throughout the program.
+     * @param jwt
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/profile")
     public ResponseEntity<User> findUserByJwtToken(@RequestHeader ("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);

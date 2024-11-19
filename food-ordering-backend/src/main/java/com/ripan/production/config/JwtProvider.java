@@ -19,11 +19,17 @@ public class JwtProvider {
     private SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 
     public String generateToken(Authentication authentication) {
+        // it  holds the user’s authorities, allowing for any subtype of GrantedAuthority.
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        /**
+         * takes the collection of GrantedAuthority objects and formats or processes them into a String representation,
+         * such as a comma-separated list of roles or authorities (e.g., "ROLE_USER,ROLE_ADMIN").
+         */
         String roles = populateAuthorities(authorities);
 
         String jwt = Jwts.builder()
-                .setIssuer("ripan")
+                .setIssuer("ripan") // sets the issuer claim (iss) of the JWT to "ripan". This claim is used to identify the entity that issued the token and can help in validating the authenticity of the token when received by another service.
+                .setSubject("ripan@example.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 86400000))
                 .claim("email", authentication.getName())

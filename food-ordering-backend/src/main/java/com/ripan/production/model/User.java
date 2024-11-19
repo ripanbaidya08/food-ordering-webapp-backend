@@ -22,12 +22,12 @@ public class User {
     private Long id;
 
     private String fullName;
-
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // we can not see the password in the response
     private String password;
 
+    // setting up the default role, and that is Customer
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     @JsonIgnore

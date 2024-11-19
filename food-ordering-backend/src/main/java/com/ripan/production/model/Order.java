@@ -29,9 +29,7 @@ public class Order {
     private Restaurant restaurant;
 
     private Long totalAmount;
-
     private String orderStatus;
-
     private Date createdAt;
 
     @ManyToOne
@@ -43,6 +41,5 @@ public class Order {
 //    private Payment payment ;
 
     private int totalItem;
-
     private Long totalPrice;
 }
