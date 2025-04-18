@@ -1,0 +1,24 @@
+# Server Port Configuration
+server:
+  port: 8080
+
+spring:
+  application:
+    name: FOODSPHERE-APP-BACKEND
+
+# Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/foodorderingsystemdb
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+# JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+# Stripe Payment Secret Configuration
+stripe:
+  api:
+    key: sk_test_51Q2bhxJZupdNbyLOXR8vcMif90AaPplHY6Jqnozu9c6S1IbHNcnafsZtH9iUtQHKlKSqAe0RbbX0hAXjqNiQbbaR00kRMMEuGG

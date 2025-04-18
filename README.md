@@ -1,4 +1,4 @@
-# foodsphere-food-ordering-system
+# FoodSphere-Online Food Ordering WebApp
 
 ## Overview
 The **FoodSphere Food Ordering System** is a role-based online food ordering application developed using Modern Spring Boot. This system is designed to provide a seamless user experience for ordering food online while incorporating essential functionalities for both users and administrators.
@@ -34,3 +34,4 @@ The **FoodSphere Food Ordering System** is a role-based online food ordering app
 ### Class diagram
 ![@localhost](https://github.com/user-attachments/assets/09b5942b-b234-4568-84c3-535a22be83f2)
 
+---
